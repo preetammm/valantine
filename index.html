@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Will You Be My Valentine?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-red': '#ff0040',
+                        'deep-burgundy': '#720026',
+                        'dark-choco': '#1a0b0e',
+                        'soft-pink': '#ffccd5',
+                    },
+                    fontFamily: {
+                        'dancing': ['"Dancing Script"', 'cursive'],
+                        'poppins': ['"Poppins"', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'heartbeat': 'heartbeat 1.5s infinite',
+                        'spin-slow': 'spin 10s linear infinite',
+                        'bg-pan': 'bgPan 10s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        heartbeat: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '15%': { transform: 'scale(1.15)' },
+                            '30%': { transform: 'scale(1)' },
+                            '45%': { transform: 'scale(1.15)' },
+                            '60%': { transform: 'scale(1)' },
+                        },
+                        bgPan: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles that are hard to do with just Tailwind classes */
+        body {
+            background: radial-gradient(circle at center, #2e1015 0%, #000000 100%);
+            overflow: hidden;
+            /* Prevent scrolling */
+        }
+
+        .click-heart {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            z-index: 50;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Full screen background for page 3 */
+        #page3 {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), url('https://www.bookemon.com/readbook/jia_2/54444def30bb81bce7978126a438236c/15660486.jpg?2017-01-11+12%3A29%3A59') no-repeat center center;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex items-center justify-center text-soft-pink select-none touch-none">
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Background Hearts -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-10 left-10 text-4xl opacity-20 animate-spin-slow">❤️</div>
+        <div class="absolute bottom-20 right-10 text-6xl opacity-10 animate-pulse-slow">💖</div>
+        <div class="absolute top-1/2 left-1/4 text-2xl opacity-10 animate-float">💕</div>
+        <div class="absolute top-10 right-20 text-5xl opacity-10 animate-bounce">💗</div>
+    </div>
+
+    <div class="container relative z-10 w-full max-w-md px-4">
+        <!-- Page 1 -->
+        <div id="page1" class="page flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
+            <h1
+                class="font-dancing text-5xl md:text-6xl text-neon-red mb-8 drop-shadow-[0_0_10px_rgba(255,0,64,0.8)] animate-pulse-slow text-center">
+                Will you be my Valentine? 💖
+            </h1>
+            <div class="buttons flex flex-col md:flex-row gap-6 w-full items-center justify-center">
+                <button
+                    class="btn yes-btn w-full md:w-auto px-8 py-4 bg-gradient-to-r from-neon-red to-pink-500 text-white font-poppins font-bold text-xl rounded-full shadow-[0_0_20px_rgba(255,0,64,0.6)] hover:scale-110 hover:shadow-[0_0_30px_rgba(255,0,64,0.9)] transition-transform animate-heartbeat"
+                    onclick="goToPage2()">
+                    Yes
+                </button>
+                <button id="noBtn1"
+                    class="btn no-btn w-full md:w-auto px-8 py-4 border-2 border-neon-red text-neon-red font-poppins font-bold text-xl rounded-full hover:bg-neon-red/10 transition-colors">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div id="page2"
+            class="page hidden flex-col items-center justify-center transition-all duration-700 ease-in-out">
+            <h1
+                class="font-dancing text-5xl md:text-6xl text-neon-red mb-4 drop-shadow-[0_0_10px_rgba(255,0,64,0.8)] text-center">
+                Are you sure? 🥺
+            </h1>
+            <p class="text-xl mb-8 font-poppins opacity-90">Don't break my heart...</p>
+            <div class="buttons flex flex-col md:flex-row gap-6 w-full items-center justify-center">
+                <button
+                    class="btn yes-btn w-full md:w-auto px-8 py-4 bg-gradient-to-r from-neon-red to-pink-500 text-white font-poppins font-bold text-xl rounded-full shadow-[0_0_20px_rgba(255,0,64,0.6)] hover:scale-110 hover:shadow-[0_0_30px_rgba(255,0,64,0.9)] transition-transform animate-heartbeat"
+                    onclick="goToPage3()">
+                    Yes! I'm sure!
+                </button>
+                <button id="noBtn2"
+                    class="btn no-btn w-full md:w-auto px-8 py-4 border-2 border-neon-red text-neon-red font-poppins font-bold text-xl rounded-full hover:bg-neon-red/10 transition-colors">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3 (Final) - Fixed Full Screen -->
+    <div id="page3" class="fixed inset-0 hidden z-50 flex-col justify-end pb-20 items-center text-center">
+        <div class="content-wrapper relative z-20 animate-float p-4">
+            <div class="text-6xl mb-2 animate-bounce">❤️</div>
+            <h1 class="font-dancing text-6xl text-neon-red drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] mb-2">
+                Yay! I love you!
+            </h1>
+            <p class="font-poppins text-2xl text-white font-bold drop-shadow-md">
+                Happy Valentine's Day!
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

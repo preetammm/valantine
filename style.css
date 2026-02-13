@@ -1,0 +1,13 @@
+/* 
+    Most styling is now handled by Tailwind CSS in index.html!
+   This file contains only necessary custom overrides or complex animations.
+*/
+
+/* Helper to allow the "No" button to move freely */
+.no-btn.runaway {
+    position: fixed;
+    /* Fixed so it can move anywhere on screen */
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 40;
+    /* Ensure it floats above other things but below alerts */
+}
