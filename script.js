@@ -31,6 +31,7 @@ function goToPage3() {
 
         // Play music
         const audio = document.getElementById('bgMusic');
+        audio.currentTime = 58; // Start at 0:58
         audio.play().catch(e => console.log("Audio requires interaction", e));
 
         // Confetti shower
