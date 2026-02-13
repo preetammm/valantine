@@ -40,23 +40,27 @@ function goToPage3() {
 
 // Button Runaway Logic
 function moveButton(btn) {
-    // Get viewport dimensions (safe area)
+    // Force fixed position so it breaks out of the flex layout immediately
+    btn.style.position = 'fixed'; // Use fixed to position relative to viewport
+    btn.style.zIndex = '1000'; // Ensure it's on top
+
+    // Get viewport dimensions
     const maxX = window.innerWidth - btn.offsetWidth - 20;
     const maxY = window.innerHeight - btn.offsetHeight - 20;
 
+    // Generate valid random coordinates
     const randomX = Math.max(10, Math.floor(Math.random() * maxX));
     const randomY = Math.max(10, Math.floor(Math.random() * maxY));
 
-    // Calculate rotation for "rolling" effect
-    // We accumulate rotation so it keeps spinning in the same direction or switches naturally
-    const currentRotation = parseInt(btn.getAttribute('data-rotation') || '0');
-    const newRotation = currentRotation + (Math.random() > 0.5 ? 360 : -360);
-    btn.setAttribute('data-rotation', newRotation);
-
-    btn.classList.add('runaway'); // Ensure styling is applied
+    // Apply new position
     btn.style.left = randomX + 'px';
     btn.style.top = randomY + 'px';
+
+    // Add rotation for effect
+    const currentRotation = parseInt(btn.getAttribute('data-rotation') || '0');
+    const newRotation = currentRotation + (Math.random() > 0.5 ? 360 : -360);
     btn.style.transform = `rotate(${newRotation}deg)`;
+    btn.setAttribute('data-rotation', newRotation);
 
     // Add a cheeky vibration on mobile
     if (navigator.vibrate) navigator.vibrate(50);
@@ -65,23 +69,20 @@ function moveButton(btn) {
 const noBtn1 = document.getElementById('noBtn1');
 const noBtn2 = document.getElementById('noBtn2');
 
-// Desktop
-noBtn1.addEventListener('mouseover', () => moveButton(noBtn1));
-noBtn2.addEventListener('mouseover', () => moveButton(noBtn2));
-
-// Mobile & Click fallback
-// using 'pointerdown' covers both mouse click attempts and touch
+// Universal handler for all interaction types
 const runAwayHandler = (e) => {
+    // Stop the event from doing anything else (like clicking)
     e.preventDefault();
-    e.stopImmediatePropagation(); // Stop other handlers
+    e.stopPropagation();
     moveButton(e.target);
 };
 
-// Add multiple event types to ensure we catch it
-// Use capture: true to catch it early
-['mouseover', 'click', 'touchstart'].forEach(evt => {
-    noBtn1.addEventListener(evt, runAwayHandler, { passive: false });
-    noBtn2.addEventListener(evt, runAwayHandler, { passive: false });
+// Add listeners to both buttons for desktop (hover) and touch/click
+[noBtn1, noBtn2].forEach(btn => {
+    btn.addEventListener('mouseover', () => moveButton(btn));
+    btn.addEventListener('click', runAwayHandler);
+    btn.addEventListener('touchstart', runAwayHandler, { passive: false });
+    btn.addEventListener('mousedown', runAwayHandler);
 });
 
 // Heart Trail
